@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
-const methodOverride=require("method-override")
+const methodOverride=require("method-override");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -63,14 +63,20 @@ app.get("/listings/:id/edit",async (req,res)=>{
 })
 
 //Update Route
-app.put("/listing/:id",async (req,res)=>{
+app.put("/listings/:id",async (req,res)=>{
         let {id}=req.params;
-       await Listing.findByIdAndUpdate(id,{...req.body.listing});
-        res.redirect("/listings");
+       await Listing.findByIdAndUpdate(id,{...req.body.listings});
+        res.redirect(`/listings/${id}`);
 
 });
 
-
+//Delete Route
+app.delete("/listings/:id",async(req,res)=>{
+    let{id}=req.params;
+    let deletedListing=await Listing.findByIdAndDelete(id);
+    console.log(deletedListing);
+    res.redirect("/listings");
+});
 
 // app.get("/testListing", async(req,res)=>{
 //      let sampleListing = new Listing({
